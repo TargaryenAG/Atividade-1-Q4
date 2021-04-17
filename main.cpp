@@ -1,39 +1,116 @@
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
-int Binario[8],Dec1,Dec2,Tam;
-string N1,N2;
+int BinR[8],DecR=0,N1B[8],N2B[8],N1D=0,N2D=0;
+int SPT=0,V=0,i=0,j=0;
 char OP;
 
 int main() {
+//Recebe e verifica se o segundo binário da operação é valido
+do{
+  cout<<"\nInforme o primeiro número em binário:\n";
+  cin>>SPT;
 
-  do{
-    cout<<"\n\nInforme o primeiro número em binário:\n";
-    cin>>N1;
-    Tam = size(N1);
-    if(Tam>8){
-      cout<<"\nO número'"<<N1<<"' número não é valido !!\n";
+  for(i=7;i>=0;i--){ //Trasporta o número para o Vetor
+    N1B[i]=SPT%10;
+    SPT=SPT/10;
+    if(N1B[i]>1){
+      V=V+1; //Verifica se o Binário é válido
     }
-  }while(Tam>=9);
-  
-  do{
-    cout<<"\n\nInforme o Segundo número em binário:\n";
-    cin>>N2;
-    Tam = size(N2);
-    if(Tam>8){
-      cout<<"\nO número'"<<N2<<" número não é valido !!\n";
-    }
-  }while(Tam>=9);
+  }
+  if(V!=0){
+    cout<<"\nO número informado não é valido !!";
+  }
+}while(V!=0);
 
-  do{
-    cout<<"\nInforme a operação matemática desejada:\n";
+  //Recebe e verifica se o segundo binário da operação é valido
+do{
+  cout<<"\nInforme o segundo número em binário:\n";
+  cin>>SPT;
+  for(i=7;i>=0;i--){ //Trasporta o número para o Vetor
+    N2B[i]=SPT%10;
+    SPT=SPT/10;
+    if(N2B[i]>1){
+      V=V+1; //Verifica se o Binário é válido
+    }
+  }
+  if(V!=0){
+    cout<<"\nO número informado não é valido !!";
+  }
+}while(V!=0);
+
+//Recebe e verifica se a operação matematica é valida
+do{
+    cout<<"\nInforme a operação matemática desejada:\nSoma = '+' || Subtração = '-' || Divisão = '/' \nMultiplicação = '*' || Módulo = '%'\n\n";
     cin>>OP;
-    if((OP!='+') or (OP!='-') or (OP!='*') or (OP!='/') or (OP!='%')){
-      cout<<"\nA operação matemática informada é invalida !!";
-    }
-  }while(OP!='+' or OP!='-' or OP!='*' or OP!='/' or OP!='%');
+    V=1;
+    if((OP =='+') or (OP =='-') or (OP =='*') or (OP =='/') or (OP =='%')){
+    V=0; //Verifica se o Operador é válido
+  }else{
+    cout<<"\nA operação matemática'"<<OP<<"' informada é invalida !!";
+  }
+}while(V!=0);
+//Converte Bínário para Decimal
+j=7;
+for(i=0;i<8;i++){
+  N1D=N1D+(N1B[i]*pow(2,j));
+  N2D=N2D+(N2B[i]*pow(2,j));
+  j=j-1;
+}
+//Realiza as operações matemáticas
+switch(OP){
+  case '+':
+    DecR=N1D+N2D;
+  break;
 
-  
+  case '-':
+    DecR=N1D-N2D;
+  break;
 
+  case '*': 
+    DecR=N1D*N2D;
+  break;
+
+  case '/':
+    DecR=N1D/N2D;
+  break;
+
+  case '%':
+    DecR=(N1D/N2D);
+    DecR=N1D-DecR*N2D;
+  break;
+}
+//Exibe a operação em decimal
+cout<<"\nDECIMAL\nO resultado da operação: "<<N1D<<OP<<N2D<<" é "<<DecR<<"\n";
+
+//Converte Decimal para Bínário
+for(i=7;i>=0;i--){
+  if((DecR % 2) > 0){
+    BinR[i]=1;
+  }else{
+    BinR[i]=0;
+  }
+  DecR=DecR/2;
+}
+
+//Exibe a operação em Binário
+cout<<"\nBINÁRIO\nO resultado da operação: \n";
+
+for(i=0;i<8;i++){
+  cout<<N1B[i];
+}
+
+cout<<OP;
+for(i=0;i<8;i++){
+  cout<<N2B[i];
+}
+cout<<" é ";
+for(i=0;i<8;i++){
+  cout<<BinR[i];
+}
+cout<<"\n\n";
+
+return 0;
 }
